@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using story_pointer.Hubs;
+using System;
+using System.Timers;
 
 namespace story_pointer
 {
@@ -28,10 +30,12 @@ namespace story_pointer
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -52,6 +56,8 @@ namespace story_pointer
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/chat");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
@@ -65,6 +71,25 @@ namespace story_pointer
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+            });
+
+            //Action<object, ElapsedEventArgs> elapsedAcion = (object sender, ElapsedEventArgs e) => {
+            //    var chatHub = (IHubContext<ChatHub>)app.ApplicationServices.GetService(typeof(IHubContext<ChatHub>));
+            //};
+
+            hostApplicationLifetime.ApplicationStarted.Register(() =>
+            {
+                var serviceProvider = app.ApplicationServices;
+                var chatHub = (IHubContext<ChatHub>)serviceProvider.GetService(typeof(IHubContext<ChatHub>));
+                var timer = new Timer(1000)
+                {
+                    Enabled = true
+                };
+                timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
+                {
+                    chatHub.Clients.All.SendAsync("setTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
+                };
+                timer.Start();
             });
         }
     }
