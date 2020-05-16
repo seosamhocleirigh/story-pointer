@@ -1,3 +1,5 @@
+@use 'Colors.scss' as colors;
+
 .App {
   text-align: center;
   // min-height: 100vh;
@@ -12,6 +14,20 @@
   // text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
   // box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 }
+
+#root {
+    /*background-color: #8699f3;*/
+    background-color: colors.$color-shark;
+}
+
+body > #root > div {
+    height: 100vh;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
 
 
 

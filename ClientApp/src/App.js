@@ -8,25 +8,29 @@ import {
 } from "react-router-dom";
 
 import './App.scss';
+import * as colors from './Colors.scss';
 
 // import Chat from './Components/Chat'
-import Login from './Components/Login'
-import Poker from './Components/Poker'
+import Login from './Views/Login'
+import Poker from './Views/Poker'
 
 function App() {
+
+  
+  
   return (
     <Router>
         
       <Navbar bg="dark" expand="lg">
-        <Navbar.Brand as={Link} to="/" >story_pointer</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/" style={{ color: colors.white }}>&lt;story_pointer /&gt;</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <NavItem eventkey={1} href="/login">
-              <Nav.Link as={Link} to="/login" >Login</Nav.Link>
+                <Nav.Link style={{ color: '#8ab085' }} as={Link} to="/login" >Login</Nav.Link>
             </NavItem>
             <NavItem eventkey={2} href="/poker">
-              <Nav.Link as={Link} to="/poker" >Poker</Nav.Link>
+                <Nav.Link style={{ color: '#8ab085' }} as={Link} to="/poker" >Poker</Nav.Link>
             </NavItem>
           </Nav>
           <Form inline>

@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import { Button, Form } from 'react-bootstrap'
 
 export default class Chat extends Component {
     constructor(props) {
@@ -41,21 +42,17 @@ export default class Chat extends Component {
 
     render() {
         return (
-            <div>
-            <br />
-            <input
-                type="text"
-                value={this.state.message}
-                onChange={e => this.setState({ message: e.target.value })}
-            />
+            <Form>
+                <Form.Group controlId="formSendMessage">
+                    <Form.Control type="text" placeholder="Ticket number/subject" value={this.state.message} onChange={e => this.setState({ message: e.target.value })} />
+                    {/* <Button onClick={this.sendMessage}>Send</Button> */}
+                </Form.Group>
 
-            <button onClick={this.sendMessage}>Send</button>
-
-            <div>
-                {this.state.messages.map((message, index) => (
-                    <span style={{ display: 'block' }} key={index}> {message} </span>
-                ))}
-            </div>
-        </div>);
+                <div>
+                    {this.state.messages.map((message, index) => (
+                        <span style={{ display: 'block' }} key={index}> {message} </span>
+                    ))}
+                </div>
+            </Form>);
     }
 }

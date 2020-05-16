@@ -1,0 +1,21 @@
+// $colors: (
+    // white: #FFFFFF;
+    // shark: #282C34;
+// );
+
+// @function color($colorName) {
+//     @return map-get($colors, $colorName);
+// }
+
+// :export {
+//     white: color(white);
+//     shark: color(shark);
+// }
+
+$color-white: #FFFFFF;
+$color-shark: #282C34;
+
+:export {
+    white: #FFFFFF;
+    shark: #282C34;
+}
