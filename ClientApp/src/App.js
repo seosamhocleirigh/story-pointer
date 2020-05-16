@@ -7,16 +7,13 @@ import {
   Link,
 } from "react-router-dom";
 
-import './App.scss';
-import * as colors from './Colors.scss';
+import './Styles/App.scss';
+import * as colors from './Styles/Colors.scss';
 
-// import Chat from './Components/Chat'
 import Login from './Views/Login'
 import Poker from './Views/Poker'
 
 function App() {
-
-  
   
   return (
     <Router>
@@ -27,10 +24,10 @@ function App() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <NavItem eventkey={1} href="/login">
-                <Nav.Link style={{ color: '#8ab085' }} as={Link} to="/login" >Login</Nav.Link>
+                <Nav.Link style={{ color: colors.bayLeaf }} as={Link} to="/login" >Login</Nav.Link>
             </NavItem>
             <NavItem eventkey={2} href="/poker">
-                <Nav.Link style={{ color: '#8ab085' }} as={Link} to="/poker" >Poker</Nav.Link>
+                <Nav.Link style={{ color: colors.bayLeaf }} as={Link} to="/poker" >Poker</Nav.Link>
             </NavItem>
           </Nav>
           <Form inline>

@@ -1,4 +1,4 @@
-@use 'Colors.scss' as colors;
+@import './Colors';
 
 .App {
   text-align: center;
@@ -16,8 +16,7 @@
 }
 
 #root {
-    /*background-color: #8699f3;*/
-    background-color: colors.$color-shark;
+    background-color: $color-shark;
 }
 
 body > #root > div {

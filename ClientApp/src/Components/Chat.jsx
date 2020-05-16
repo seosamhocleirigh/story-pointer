@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import { Button, Form } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 export default class Chat extends Component {
     constructor(props) {
@@ -45,7 +45,6 @@ export default class Chat extends Component {
             <Form>
                 <Form.Group controlId="formSendMessage">
                     <Form.Control type="text" placeholder="Ticket number/subject" value={this.state.message} onChange={e => this.setState({ message: e.target.value })} />
-                    {/* <Button onClick={this.sendMessage}>Send</Button> */}
                 </Form.Group>
 
                 <div>
