@@ -3,11 +3,12 @@ $color-white: #FFFFFF;
 $color-shark: #282C34;
 $color-portage: #7b87e8;
 $color-bay-leaf: #8ab085;
-
+$color-puce: #ce8492;
 // for use in react components
 :export {
     white: $color-white;
     shark: $color-shark;
     portage: $color-portage;
     bayLeaf: $color-bay-leaf;
+    puce: $color-puce;
 }

@@ -57,6 +57,7 @@ namespace story_pointer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapHub<VoteHub>("/vote");
 
                 endpoints.MapControllerRoute(
                     name: "default",
