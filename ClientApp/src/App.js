@@ -10,8 +10,8 @@ import {
 import './Styles/App.scss';
 import * as colors from './Styles/Colors.scss';
 
-import Login from './Views/Login'
-import Poker from './Views/Poker'
+import Login from './Views/Login';
+import Poker from './Views/Poker';
 
 function App() {
   

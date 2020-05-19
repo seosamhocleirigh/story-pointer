@@ -1,25 +1,24 @@
 ﻿import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { connect } from 'react-redux'
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import * as colors from '../Styles/Colors.scss';
 
-export default class VotingPanel extends Component {
+class VotingPanel extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            nick: '',
             hubConnection: null,
             votes: [],
         };
     }
 
     componentDidMount = () => {
-        
-        const nick = window.prompt('Your name:', 'John'); // this needs to be set once and saved in redux
+        const { userName } = this.props;
         const hubConnection = new HubConnectionBuilder().withUrl('/vote').build();
 
-        this.setState({ hubConnection, nick }, () => {
+        this.setState({ hubConnection, userName }, () => {
             this.state.hubConnection
                 .start()
                 .then(() => console.log('Connection started!'))
@@ -37,7 +36,7 @@ export default class VotingPanel extends Component {
     sendMessage = (vote) => {
         
         this.state.hubConnection
-            .invoke('sendVoteToAll', { "Name": this.state.nick, "Vote": vote })
+            .invoke('sendVoteToAll', { "Name": this.props.userName, "Vote": vote })
             .catch(err => console.error(err));
 
     };
@@ -64,7 +63,7 @@ export default class VotingPanel extends Component {
                 <Row style={{ color: '#CCC' }}>
                     <div>
                         {this.state.votes.map((vote, index) => (
-                            <span style={{ display: 'block' }} key={index}> {vote.vote} </span>
+                            <span style={{ display: 'block' }} key={index}>{vote.name} - {vote.vote} </span>
                         ))}
                     </div>
                 </Row>
@@ -72,3 +71,7 @@ export default class VotingPanel extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({ userName: state.login.userName });
+
+export default connect(mapStateToProps)(VotingPanel);

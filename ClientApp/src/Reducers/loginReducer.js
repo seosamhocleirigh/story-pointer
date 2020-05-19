@@ -1,8 +1,7 @@
 ﻿import { USER_LOGIN } from '../Actions/actionTypes';
-import * as actions from '../Actions/loginActions';
 
 export const initialState = {
-    userName: null
+    userName: ''
 }
 
 export default function loginReducer(state = initialState, action) {

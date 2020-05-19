@@ -1,7 +1,10 @@
-import React, { Component } from 'react'
-import { Form } from 'react-bootstrap'
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { Form } from 'react-bootstrap';
+import { Container, Row,  Button } from 'react-bootstrap';
+import {
+    withRouter
+} from "react-router-dom";
+import { connect } from 'react-redux';
 import { userLogin } from '../Actions/loginActions'
 
 import * as colors from '../Styles/Colors.scss';
@@ -12,20 +15,20 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            userName: null,
+            enteredUserName: null,
         };
     }
 
     onLoginFieldChange = (event) => {
         this.setState({
-            userName: event.target.value
+            enteredUserName: event.target.value
         });
     }
 
     handleSubmit = (event) => {
         event.preventDefault(0);
-        this.props.userLogin(this.state.userName);
-        // TODO: direct user to poker page
+        this.props.userLogin(this.state.enteredUserName);
+        this.props.history.push('/poker');
     }
 
     render () {
@@ -35,7 +38,7 @@ class Login extends Component {
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group controlId="formLogin">
                             <h3 style={{ color: colors.puce }}>Login</h3>
-                            <Form.Control type="text" placeholder="Enter name" onChange={this.onLoginFieldChange} />
+                            <Form.Control type="text" placeholder={this.props.userName} onChange={this.onLoginFieldChange} />
                             <Form.Text className="text-muted">
                                 Enter your name or an alias
                             </Form.Text>
@@ -48,10 +51,14 @@ class Login extends Component {
     };
 }
 
+const mapStateToProps = state => ({ userName: state.login.userName });
+
 function mapDispatchToProps(dispatch) {
     return {
         userLogin: userName => dispatch(userLogin(userName))
     };
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default withRouter(connectedLogin);

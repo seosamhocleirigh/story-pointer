@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import Chat from '../Components/Chat'
+import PokerSubject from '../Components/PokerSubject'
 import VotingPanel from '../Components/VotingPanel'
 import * as colors from '../Styles/Colors.scss'
 
@@ -16,7 +16,7 @@ export default class Poker extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Chat />
+                        <PokerSubject />
                     </Col>
                 </Row>
                 <Row>
