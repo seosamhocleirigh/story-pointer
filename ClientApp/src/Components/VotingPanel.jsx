@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { connect } from 'react-redux'
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { connect } from 'react-redux';
+import { castVote, clearVotes } from '../Actions/connectedUsersActions';
 import * as colors from '../Styles/Colors.scss';
 
 class VotingPanel extends Component {
@@ -11,38 +11,22 @@ class VotingPanel extends Component {
         this.state = {
             hubConnection: null,
             votes: [],
+            connectedUsers: [],
+            showVotes: false,
         };
     }
 
-    componentDidMount = () => {
-        const { userName } = this.props;
-        const hubConnection = new HubConnectionBuilder().withUrl('/vote').build();
-
-        this.setState({ hubConnection, userName }, () => {
-            this.state.hubConnection
-                .start()
-                .then(() => console.log('Connection started!'))
-                .catch(err => console.log('Error while establishing connection :('));
-
-            this.state.hubConnection.on('sendVoteToAll', (receivedVote) => {
-                
-                const votes = this.state.votes.concat([receivedVote]);
-                this.setState({ votes });
-                
-            });
-        });
+    castVote = (vote) => {
+        this.props.castVote(vote);
     };
 
-    sendMessage = (vote) => {
-        
-        this.state.hubConnection
-            .invoke('sendVoteToAll', { "Name": this.props.userName, "Vote": vote })
-            .catch(err => console.error(err));
-
+    clearVotes = () => {
+        this.props.clearVotes();
     };
 
     render() {
         const fibonacciSeries = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100];
+        const { connectedUsers } = this.props.connectedUsers.users;
 
         return (
             <Container>
@@ -54,16 +38,27 @@ class VotingPanel extends Component {
                     {fibonacciSeries.map((number) =>
                         <Col>
                             <Button style={{ cursor: "pointer" }} key={'vote-' + number}
-                                onClick={this.sendMessage.bind(null, number)}
+                                onClick={this.castVote.bind(null, number)}
                                 variant="primary">{number}</Button>
                         </Col>)
                     }
                     <Col></Col>
                 </Row>
-                <Row style={{ color: '#CCC' }}>
+                <Row className='mt-5'>
+                    <Col></Col>
+                    <Col>
+                        <Button variant="danger" onClick={this.clearVotes}>Clear votes</Button>
+                        <Button variant="outline-info" onClick={() => this.setState({ showVotes: true })}>Show votes</Button>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <Row className='mt-5' style={{ color: colors.puce }}>
+                    <h3>Voters</h3>
+                </Row>
+                <Row style={{ color: colors.brandy }}>
                     <div>
-                        {this.state.votes.map((vote, index) => (
-                            <span style={{ display: 'block' }} key={index}>{vote.name} - {vote.vote} </span>
+                        {connectedUsers.map((connectedUser, index) => (
+                            <span style={{ display: 'block' }} key={index}>{connectedUser.userName} {this.state.showVotes ? "- " + connectedUser.vote : connectedUser.vote !== null ? "- has voted" : ""}</span>
                         ))}
                     </div>
                 </Row>
@@ -72,6 +67,13 @@ class VotingPanel extends Component {
     }
 }
 
-const mapStateToProps = state => ({ userName: state.login.userName });
+const mapStateToProps = state => ({ connectedUsers: state.connectedUsers });
 
-export default connect(mapStateToProps)(VotingPanel);
+function mapDispatchToProps(dispatch) {
+    return {
+        castVote: vote => dispatch(castVote(vote)),
+        clearVotes: dispatch(clearVotes()),
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VotingPanel);

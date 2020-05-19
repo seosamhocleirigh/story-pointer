@@ -1,1 +1,5 @@
 ﻿export const USER_LOGIN = 'USER_LOGIN';
+export const UPDATE_CONNECTED_USER = 'REGISTER_CONNECTED_USER';
+export const SET_USER_NAME = 'SET_USER_NAME';
+export const CAST_VOTE = 'CAST_VOTE';
+export const CLEAR_VOTES = 'CLEAR_VOTES';

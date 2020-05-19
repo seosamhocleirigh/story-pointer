@@ -80,7 +80,7 @@ namespace story_pointer
             hostApplicationLifetime.ApplicationStarted.Register(() =>
             {
                 var serviceProvider = app.ApplicationServices;
-                var chatHub = (IHubContext<ChatHub>)serviceProvider.GetService(typeof(IHubContext<ChatHub>));
+                var chatHub = (IHubContext<VoteHub>)serviceProvider.GetService(typeof(IHubContext<VoteHub>));
                 var timer = new Timer(1000)
                 {
                     Enabled = true

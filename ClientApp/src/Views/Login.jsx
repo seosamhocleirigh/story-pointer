@@ -5,7 +5,7 @@ import {
     withRouter
 } from "react-router-dom";
 import { connect } from 'react-redux';
-import { userLogin } from '../Actions/loginActions'
+import { setUserName } from '../Actions/connectedUsersActions';
 
 import * as colors from '../Styles/Colors.scss';
 
@@ -31,14 +31,16 @@ class Login extends Component {
         this.props.history.push('/poker');
     }
 
-    render () {
+    render() {
+        const { currentUser } = this.props.connectedUsers.users;
+
         return (
             <Container>
                 <Row>
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group controlId="formLogin">
                             <h3 style={{ color: colors.puce }}>Login</h3>
-                            <Form.Control type="text" placeholder={this.props.userName} onChange={this.onLoginFieldChange} />
+                            <Form.Control type="text" placeholder={currentUser.userName} onChange={this.onLoginFieldChange} />
                             <Form.Text className="text-muted">
                                 Enter your name or an alias
                             </Form.Text>
@@ -51,11 +53,11 @@ class Login extends Component {
     };
 }
 
-const mapStateToProps = state => ({ userName: state.login.userName });
+const mapStateToProps = state => ({ connectedUsers: state.connectedUsers });
 
 function mapDispatchToProps(dispatch) {
     return {
-        userLogin: userName => dispatch(userLogin(userName))
+        userLogin: userName => dispatch(setUserName(userName))
     };
 }
 
