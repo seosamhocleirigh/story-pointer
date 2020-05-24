@@ -1,4 +1,4 @@
-﻿import { UPDATE_CONNECTED_USER, SET_USER_NAME, CAST_VOTE, CLEAR_VOTES } from '../Actions/actionTypes';
+﻿import { UPDATE_CONNECTED_USER, SET_USER_NAME, CAST_VOTE, CLEAR_VOTES, CLEAR_VOTES_ALL_USERS, SHOW_VOTES, SHOW_VOTES_ALL_USERS } from '../Actions/actionTypes';
 
 export const signalRWebsocketMiddleware = (hubConnection) => {
     return storeAPI => {
@@ -15,6 +15,20 @@ export const signalRWebsocketMiddleware = (hubConnection) => {
             });
         });
 
+        hubConnection.on("showVotesAllUsers", () => {
+            console.log('showVotesAllUsers');
+            storeAPI.dispatch({
+                type: SHOW_VOTES_ALL_USERS,
+            });
+        });
+
+        hubConnection.on("clearVotesAllUsers", () => {
+            console.log('clearVotesAllUsers');
+            storeAPI.dispatch({
+                type: CLEAR_VOTES_ALL_USERS,
+            });
+        });
+
         return next => action => {
             switch (action.type) {
                 case SET_USER_NAME:
@@ -26,14 +40,17 @@ export const signalRWebsocketMiddleware = (hubConnection) => {
                     hubConnection
                         .invoke('castVote', action.payload)
                         .catch(err => console.error(err));
-
                     return;
+
+                case SHOW_VOTES:
+                    hubConnection
+                        .invoke('showVotes')
+                        .catch(err => console.error(err));
 
                 case CLEAR_VOTES:
                     hubConnection
-                        .invoke('clearVote')
+                        .invoke('clearVotes')
                         .catch(err => console.error(err));
-
                     return;
 
                 default:

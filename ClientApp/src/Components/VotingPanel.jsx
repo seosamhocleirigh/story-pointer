@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { castVote, clearVotes } from '../Actions/connectedUsersActions';
+import { castVote, clearVotes, showVotes } from '../Actions/connectedUsersActions';
 import * as colors from '../Styles/Colors.scss';
 
 class VotingPanel extends Component {
@@ -10,9 +10,7 @@ class VotingPanel extends Component {
 
         this.state = {
             hubConnection: null,
-            votes: [],
             connectedUsers: [],
-            showVotes: false,
         };
     }
 
@@ -22,6 +20,10 @@ class VotingPanel extends Component {
 
     clearVotes = () => {
         this.props.clearVotes();
+    };
+
+    showVotes = () => {
+        this.props.showVotes();
     };
 
     render() {
@@ -48,7 +50,7 @@ class VotingPanel extends Component {
                     <Col></Col>
                     <Col>
                         <Button variant="danger" onClick={this.clearVotes}>Clear votes</Button>
-                        <Button variant="outline-info" onClick={() => this.setState({ showVotes: true })}>Show votes</Button>
+                        <Button variant="outline-info" onClick={this.showVotes}>Show votes</Button>
                     </Col>
                     <Col></Col>
                 </Row>
@@ -58,7 +60,7 @@ class VotingPanel extends Component {
                 <Row style={{ color: colors.brandy }}>
                     <div>
                         {connectedUsers.map((connectedUser, index) => (
-                            <span style={{ display: 'block' }} key={index}>{connectedUser.userName} {this.state.showVotes ? "- " + connectedUser.vote : connectedUser.vote !== null ? "- has voted" : ""}</span>
+                            <span style={{ display: 'block' }} key={index}>{connectedUser.userName} {this.props.showVotes ? "- " + connectedUser.vote : connectedUser.vote !== null ? "- has voted" : ""}</span>
                         ))}
                     </div>
                 </Row>
@@ -72,7 +74,8 @@ const mapStateToProps = state => ({ connectedUsers: state.connectedUsers });
 function mapDispatchToProps(dispatch) {
     return {
         castVote: vote => dispatch(castVote(vote)),
-        clearVotes: dispatch(clearVotes()),
+        clearVotes: () => dispatch(clearVotes()),
+        showVotes: () => dispatch(showVotes()),
     };
 }
 

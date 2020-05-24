@@ -24,6 +24,7 @@ namespace story_pointer.Hubs
 
         public void PushConnectedUsersUpdate()
         {
+            // TODO: find out if its possible to use the Context.User correctly instead of the UserHandler
             Clients.All.SendAsync("updateConnectedUsers", 
                 new { 
                     user = Context.User,
@@ -49,10 +50,16 @@ namespace story_pointer.Hubs
             PushConnectedUsersUpdate();
         }
 
+        public void ShowVotes()
+        {
+            Clients.All.SendAsync("showVotesAllUsers");
+        }
+
         public void ClearVotes()
         {
             UserHandler.ConnectedUsers.ForEach(user => user.Vote = null);
             PushConnectedUsersUpdate();
+            Clients.All.SendAsync("clearVotesAllUsers");
         }
 
         public static string GenerateName(int len)
