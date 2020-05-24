@@ -14,21 +14,33 @@ class VotingPanel extends Component {
         };
     }
 
-    castVote = (vote) => {
-        this.props.castVote(vote);
+    handleCastVote = (vote) => {
+        this.props.signRCastVote(vote);
     };
 
-    clearVotes = () => {
-        this.props.clearVotes();
+    handleClearVotes = () => {
+        this.props.sigRClearVotes();
     };
 
-    showVotes = () => {
-        this.props.showVotes();
+    handleShowVotes = () => {
+        this.props.sigRShowVotes();
     };
 
     render() {
         const fibonacciSeries = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100];
-        const { connectedUsers } = this.props.connectedUsers.users;
+
+        function RenderConnectedUserVotes(props) {
+            if (props.connectedUsers && props.connectedUsers.length > 0) {
+                return props.connectedUsers.map((connectedUser, index) => (
+                    <span style={{ display: 'block' }} key={index}>
+                        {connectedUser.userName} 
+                        {props.showVotes ? " - " + connectedUser.vote : (connectedUser.vote !== null ? " - has voted" : "")}
+                    </span>
+                ));
+            } else {
+                return <div>Loading..</div>
+            }
+        }
 
         return (
             <Container>
@@ -40,7 +52,7 @@ class VotingPanel extends Component {
                     {fibonacciSeries.map((number) =>
                         <Col>
                             <Button style={{ cursor: "pointer" }} key={'vote-' + number}
-                                onClick={this.castVote.bind(null, number)}
+                                onClick={this.handleCastVote.bind(null, number)}
                                 variant="primary">{number}</Button>
                         </Col>)
                     }
@@ -49,8 +61,8 @@ class VotingPanel extends Component {
                 <Row className='mt-5'>
                     <Col></Col>
                     <Col>
-                        <Button variant="danger" onClick={this.clearVotes}>Clear votes</Button>
-                        <Button variant="outline-info" onClick={this.showVotes}>Show votes</Button>
+                        <Button variant="danger" onClick={this.handleClearVotes}>Clear votes</Button>
+                        <Button variant="outline-info" onClick={this.handleShowVotes}>Show votes</Button>
                     </Col>
                     <Col></Col>
                 </Row>
@@ -59,9 +71,7 @@ class VotingPanel extends Component {
                 </Row>
                 <Row style={{ color: colors.brandy }}>
                     <div>
-                        {connectedUsers.map((connectedUser, index) => (
-                            <span style={{ display: 'block' }} key={index}>{connectedUser.userName} {this.props.showVotes ? "- " + connectedUser.vote : connectedUser.vote !== null ? "- has voted" : ""}</span>
-                        ))}
+                        <RenderConnectedUserVotes connectedUsers={this.props.connectedUsers} showVotes={this.props.showVotes} />
                     </div>
                 </Row>
             </Container>
@@ -69,13 +79,19 @@ class VotingPanel extends Component {
     }
 }
 
-const mapStateToProps = state => ({ connectedUsers: state.connectedUsers });
+
+const mapStateToProps = (state) => {
+    return {
+        connectedUsers: state.connectedUsers.users,
+        showVotes: state.connectedUsers.showVotes,
+    }
+};
 
 function mapDispatchToProps(dispatch) {
     return {
-        castVote: vote => dispatch(castVote(vote)),
-        clearVotes: () => dispatch(clearVotes()),
-        showVotes: () => dispatch(showVotes()),
+        signRCastVote: vote => dispatch(castVote(vote)),
+        sigRClearVotes: () => dispatch(clearVotes()),
+        sigRShowVotes: () => dispatch(showVotes()),
     };
 }
 

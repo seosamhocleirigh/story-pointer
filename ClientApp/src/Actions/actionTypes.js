@@ -1,8 +1,8 @@
 ﻿export const USER_LOGIN = 'USER_LOGIN';
 export const UPDATE_CONNECTED_USER = 'REGISTER_CONNECTED_USER';
-export const SET_USER_NAME = 'SET_USER_NAME';
-export const CAST_VOTE = 'CAST_VOTE';
-export const CLEAR_VOTES = 'CLEAR_VOTES';
-export const CLEAR_VOTES_ALL_USERS = 'CLEAR_VOTES_ALL_USERS';
-export const SHOW_VOTES = 'SHOW_VOTES';
-export const SHOW_VOTES_ALL_USERS = 'SHOW_VOTES_ALL_USERS';
+export const SIGR_SET_USER_NAME = 'SET_USER_NAME';
+export const SIGR_CAST_VOTE = 'CAST_VOTE';
+export const SIGR_CLEAR_VOTES = 'CLEAR_VOTES';
+export const CLEAR_VOTES = 'CLEAR_VOTES_ALL_USERS';
+export const SIGR_SHOW_VOTES = 'SHOW_VOTES';
+export const SHOW_VOTES = 'SHOW_VOTES_ALL_USERS';

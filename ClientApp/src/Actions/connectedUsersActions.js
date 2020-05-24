@@ -1,19 +1,19 @@
-﻿import { SET_USER_NAME, CAST_VOTE, CLEAR_VOTES, SHOW_VOTES } from './actionTypes';
+﻿import { SIGR_SET_USER_NAME, SIGR_CAST_VOTE, SIGR_CLEAR_VOTES, SIGR_SHOW_VOTES } from './actionTypes';
 
 export const setUserName = payload => ({
-    type: SET_USER_NAME,
+    type: SIGR_SET_USER_NAME,
     payload
 });
 
 export const castVote = payload => ({
-    type: CAST_VOTE,
+    type: SIGR_CAST_VOTE,
     payload
 });
 
 export const showVotes = () => ({
-    type: SHOW_VOTES
+    type: SIGR_SHOW_VOTES
 });
 
 export const clearVotes = () => ({
-    type: CLEAR_VOTES
+    type: SIGR_CLEAR_VOTES
 });

@@ -1,4 +1,12 @@
-﻿import { UPDATE_CONNECTED_USER, SET_USER_NAME, CAST_VOTE, CLEAR_VOTES, CLEAR_VOTES_ALL_USERS, SHOW_VOTES, SHOW_VOTES_ALL_USERS } from '../Actions/actionTypes';
+﻿import {
+    UPDATE_CONNECTED_USER,
+    SIGR_SET_USER_NAME,
+    SIGR_CAST_VOTE,
+    SIGR_CLEAR_VOTES,
+    CLEAR_VOTES,
+    SIGR_SHOW_VOTES,
+    SHOW_VOTES
+} from '../Actions/actionTypes';
 
 export const signalRWebsocketMiddleware = (hubConnection) => {
     return storeAPI => {
@@ -16,38 +24,37 @@ export const signalRWebsocketMiddleware = (hubConnection) => {
         });
 
         hubConnection.on("showVotesAllUsers", () => {
-            console.log('showVotesAllUsers');
             storeAPI.dispatch({
-                type: SHOW_VOTES_ALL_USERS,
+                type: SHOW_VOTES,
             });
         });
 
         hubConnection.on("clearVotesAllUsers", () => {
-            console.log('clearVotesAllUsers');
             storeAPI.dispatch({
-                type: CLEAR_VOTES_ALL_USERS,
+                type: CLEAR_VOTES,
             });
         });
 
         return next => action => {
             switch (action.type) {
-                case SET_USER_NAME:
+                case SIGR_SET_USER_NAME:
                     hubConnection.invoke('setUserName', action.payload)
                         .catch(err => console.error(err));
                     return;
 
-                case CAST_VOTE:
+                case SIGR_CAST_VOTE:
                     hubConnection
                         .invoke('castVote', action.payload)
                         .catch(err => console.error(err));
                     return;
 
-                case SHOW_VOTES:
+                case SIGR_SHOW_VOTES:
                     hubConnection
                         .invoke('showVotes')
                         .catch(err => console.error(err));
+                    return;
 
-                case CLEAR_VOTES:
+                case SIGR_CLEAR_VOTES:
                     hubConnection
                         .invoke('clearVotes')
                         .catch(err => console.error(err));
