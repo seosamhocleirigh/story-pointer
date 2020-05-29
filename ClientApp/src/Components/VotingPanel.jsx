@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { castVote, clearVotes, showVotes } from '../Actions/connectedUsersActions';
 import * as colors from '../Styles/Colors.scss';
@@ -32,23 +32,29 @@ class VotingPanel extends Component {
         function RenderConnectedUserVotes(props) {
             if (props.connectedUsers && props.connectedUsers.length > 0) {
                 return props.connectedUsers.map((connectedUser, index) => (
-                    <span style={{ display: 'block' }} key={index}>
+                    <span style={{ display: 'block', fontSize: 'x-large' }} key={index}>
                         {connectedUser.userName} 
-                        {props.showVotes ? " - " + connectedUser.vote : (connectedUser.vote !== null ? " - has voted" : "")}
+                        {connectedUser.showVote ? " - " + connectedUser.vote : (connectedUser.vote !== null ? " - has voted" : "")}
                     </span>
                 ));
             } else {
-                return <div>Loading..</div>
+                return (
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                );
             }
         }
 
         return (
             <Container>
+                <Row>&nbsp;</Row>
                 <Row>
-                    <h3 style={{ color: colors.puce }}>Vote</h3>
+                    <h3 style={{ color: colors.portage }}>Vote</h3>
                 </Row>
                 <Row>
                     <Col></Col>
+                    {/* TODO: change buttons for cards */}
                     {fibonacciSeries.map((number) =>
                         <Col>
                             <Button style={{ cursor: "pointer" }} key={'vote-' + number}
@@ -66,7 +72,7 @@ class VotingPanel extends Component {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Row className='mt-5' style={{ color: colors.puce }}>
+                <Row className='mt-5' style={{ color: colors.portage }}>
                     <h3>Voters</h3>
                 </Row>
                 <Row style={{ color: colors.brandy }}>

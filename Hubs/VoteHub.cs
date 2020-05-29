@@ -42,6 +42,7 @@ namespace story_pointer.Hubs
         public void UpdatePokerSubject(string name, string message)
         {
             Clients.All.SendAsync("updatePokerSubject", name, message);
+            PushConnectedUsersUpdate();
         }
 
         public void CastVote(float vote)
@@ -52,14 +53,27 @@ namespace story_pointer.Hubs
 
         public void ShowVotes()
         {
-            Clients.All.SendAsync("showVotesAllUsers");
+            UserHandler.ConnectedUsers.ForEach(user => user.ShowVote = true);
+            PushConnectedUsersUpdate();
         }
 
         public void ClearVotes()
         {
             UserHandler.ConnectedUsers.ForEach(user => user.Vote = null);
+            UserHandler.ConnectedUsers.ForEach(user => user.ShowVote = false);
             PushConnectedUsersUpdate();
-            Clients.All.SendAsync("clearVotesAllUsers");
+        }
+
+        public async Task AddToGroup(string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}.");
+        }
+
+        public async Task RemoveFromGroup(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
         }
 
         public static string GenerateName(int len)
@@ -93,5 +107,6 @@ namespace story_pointer.Hubs
         public string WebSocketId { get; set; }
         public string UserName { get; set; }
         public float? Vote { get; set; } = null;
+        public bool ShowVote { get; set; }
     }
 }

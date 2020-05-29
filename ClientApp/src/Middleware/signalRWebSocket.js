@@ -3,9 +3,7 @@
     SIGR_SET_USER_NAME,
     SIGR_CAST_VOTE,
     SIGR_CLEAR_VOTES,
-    CLEAR_VOTES,
     SIGR_SHOW_VOTES,
-    SHOW_VOTES
 } from '../Actions/actionTypes';
 
 export const signalRWebsocketMiddleware = (hubConnection) => {
@@ -20,18 +18,6 @@ export const signalRWebsocketMiddleware = (hubConnection) => {
             storeAPI.dispatch({
                 type: UPDATE_CONNECTED_USER,
                 payload: connectedUsers
-            });
-        });
-
-        hubConnection.on("showVotesAllUsers", () => {
-            storeAPI.dispatch({
-                type: SHOW_VOTES,
-            });
-        });
-
-        hubConnection.on("clearVotesAllUsers", () => {
-            storeAPI.dispatch({
-                type: CLEAR_VOTES,
             });
         });
 

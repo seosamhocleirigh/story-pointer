@@ -36,11 +36,12 @@ class Login extends Component {
 
         return (
             <Container>
+                <Row>&nbsp;</Row>
                 <Row>
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group controlId="formLogin">
                             <h3 style={{ color: colors.puce }}>Login</h3>
-                            <Form.Control type="text" placeholder={currentUser.userName} onChange={this.onLoginFieldChange} />
+                            <Form.Control type="text" placeholder={currentUser !== undefined ? currentUser.userName : ''} onChange={this.onLoginFieldChange} />
                             <Form.Text className="text-muted">
                                 Enter your name or an alias
                             </Form.Text>

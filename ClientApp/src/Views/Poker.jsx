@@ -9,9 +9,10 @@ export default class Poker extends Component {
     render () {
         return (
             <Container style={{ backgroundColor: colors.shark }}>
+                <Row>&nbsp;</Row>
                 <Row>
                     <Col>
-                        <h2 style={{ color: colors.portage }}>Story Poker</h2>
+                        <h2 style={{ color: colors.puce }}>Story Poker</h2>
                     </Col>
                 </Row>
                 <Row>

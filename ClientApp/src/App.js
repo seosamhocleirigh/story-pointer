@@ -10,6 +10,7 @@ import {
 import './Styles/App.scss';
 import * as colors from './Styles/Colors.scss';
 
+import Home from './Views/Home';
 import Login from './Views/Login';
 import Poker from './Views/Poker';
 
@@ -39,7 +40,7 @@ function App() {
 
       <Switch>
         <Route exact path='/'>
-            <div>home</div>
+            <Home />
           </Route>
           <Route exact path='/login'>
             <Login />
