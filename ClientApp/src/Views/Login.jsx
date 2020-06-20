@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import { Container, Row,  Button } from 'react-bootstrap';
-import {
-    withRouter
-} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { setUserName } from '../Actions/connectedUsersActions';
-
 import * as colors from '../Styles/Colors.scss';
 
 class Login extends Component {

@@ -64,10 +64,19 @@ namespace story_pointer.Hubs
             PushConnectedUsersUpdate();
         }
 
+        public async Task ListGroups()
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("groupsListUpdate", new { groupsList = GroupHandler.GroupNames });
+        }
+
         public async Task AddToGroup(string groupName)
         {
+            if (!GroupHandler.GroupNames.Contains(groupName))
+                GroupHandler.GroupNames.Add(groupName);
+
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}.");
+            await Clients.Client(Context.ConnectionId).SendAsync("groupsListUpdate", new { groupsList = GroupHandler.GroupNames });
         }
 
         public async Task RemoveFromGroup(string groupName)
@@ -100,6 +109,11 @@ namespace story_pointer.Hubs
     public static class UserHandler
     {
         public static List<User> ConnectedUsers = new List<User>();
+    }
+
+    public static class GroupHandler
+    {
+        public static List<string> GroupNames = new List<string>();
     }
 
     public class User

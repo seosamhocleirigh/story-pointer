@@ -10,7 +10,7 @@ class VotingPanel extends Component {
 
         this.state = {
             hubConnection: null,
-            connectedUsers: [],
+            //connectedUsers: [],
         };
     }
 

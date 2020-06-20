@@ -4,6 +4,9 @@
     SIGR_CAST_VOTE,
     SIGR_CLEAR_VOTES,
     SIGR_SHOW_VOTES,
+    SIGR_CREATE_GROUP,
+    GROUPS_LIST_UPDATE,
+    SIGR_LIST_GROUPS
 } from '../Actions/actionTypes';
 
 export const signalRWebsocketMiddleware = (hubConnection) => {
@@ -21,8 +24,25 @@ export const signalRWebsocketMiddleware = (hubConnection) => {
             });
         });
 
+        hubConnection.on("groupsListUpdate", (groupsList) => {
+            storeAPI.dispatch({
+                type: GROUPS_LIST_UPDATE,
+                payload: groupsList
+            });
+        });
+
         return next => action => {
             switch (action.type) {
+                case SIGR_LIST_GROUPS:
+                    hubConnection.invoke('listGroups')
+                        .catch(err => console.error(err));
+                    return;
+
+                case SIGR_CREATE_GROUP:
+                    hubConnection.invoke('addToGroup', action.payload)
+                        .catch(err => console.error(err));
+                    return;
+
                 case SIGR_SET_USER_NAME:
                     hubConnection.invoke('setUserName', action.payload)
                         .catch(err => console.error(err));
